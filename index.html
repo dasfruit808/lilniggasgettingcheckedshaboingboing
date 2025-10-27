@@ -85,6 +85,35 @@
             z-index: 10;
         }
 
+        .prize-content-image {
+            padding: 0;
+            color: #f9fafb;
+            font-size: 0.7rem;
+        }
+
+        .prize-content-image .fact-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prize-content-image .fact-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.68);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+        }
+
+        .prize-content-image .fact-text {
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
         /* Style for winning content background */
         .winning-bg {
             background-color: var(--color-reveal-bg);
@@ -204,7 +233,7 @@
             // Non-Winning Facts/Links
             { id: 7, content: "Fact: Recorded 'Riff X' in a closet!", isWinning: false, isRevealed: false },
             { id: 8, content: "Fact: Drummer collects vintage synthesizers.", isWinning: false, isRevealed: false },
-            { id: 9, content: "Fact: Bassist is a certified scuba diver.", isWinning: false, isRevealed: false },
+            { id: 9, content: "Keyboard player is addicted to gambling and reminds everyone about it constantly", imageSrc: "fact1.png", type: "image", isWinning: false, isRevealed: false },
         ];
 
 
@@ -349,13 +378,29 @@
             PRIZE_MAP.forEach(item => item.isRevealed = false);
 
             PRIZE_MAP.forEach(item => {
-                const winningClass = item.isWinning ? 'winning-bg' : 'bg-white';
-                
+                const contentClasses = ['prize-content'];
+                if (item.type === 'image') {
+                    contentClasses.push('prize-content-image');
+                } else if (item.isWinning) {
+                    contentClasses.push('winning-bg');
+                } else {
+                    contentClasses.push('bg-white');
+                }
+
+                const innerContent = item.type === 'image'
+                    ? `
+                        <img src="${item.imageSrc}" alt="Fun Fact Prize" class="fact-image" />
+                        <div class="fact-overlay">
+                            <p class="fact-text">${item.content}</p>
+                        </div>
+                    `
+                    : `<p class="text-sm font-semibold leading-tight">${item.content}</p>`;
+
                 const tileHTML = `
                     <div data-prize-id="${item.id}" class="prize-tile">
                         <!-- Content to be revealed -->
-                        <div class="prize-content ${winningClass}">
-                            <p class="text-sm font-semibold leading-tight">${item.content}</p>
+                        <div class="${contentClasses.join(' ')}">
+                            ${innerContent}
                         </div>
                         
                         <!-- Cover Layer (Hidden by default, shown when revealed) -->
