@@ -19,7 +19,11 @@
         /* Custom styles for the lottery scratcher look */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #2d3748; /* Dark background */
+            background-color: #2d3748; /* Dark background fallback */
+            background-image: url('scratchcard-background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         .lottery-ticket {
             background: linear-gradient(135deg, #fefce8 0%, #fff7ed 100%); /* Creamy background */
